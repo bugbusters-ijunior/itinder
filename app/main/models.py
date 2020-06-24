@@ -25,7 +25,7 @@ class Trainee(db.Model):
     def get_id(self):
         return str(self.id)
 
-    def __init__(self, username, email, nome, senha):
+    def __init__(self, email, nome, senha):
         self.nome = nome
         self.email = email
         self.senha = senha

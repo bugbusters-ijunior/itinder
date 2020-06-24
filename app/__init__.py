@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager
 
 app = Flask(__name__)
 
@@ -16,6 +17,10 @@ Migrate(app, db)
 
 ####CONFIGURAÇÕES RELACIONADAS A FORMULÁRIOS####
 app.config['SECRET_KEY'] = 'mysecretkey'
+
+####CONFIGURAÇÕES DO FLASK-LOGIN####
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 ####IMPORTAÇÃO DE MODELOS####
 from app.main import models
