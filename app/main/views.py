@@ -1,5 +1,5 @@
 from flask import render_template, url_for, redirect
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 from app import app, db, login_manager
 from app.main.models import Trainee, Diretoria, Association
 from app.main.forms import LoginForm
@@ -9,6 +9,7 @@ def load_user(user_id):
     return Trainee.query.filter_by(id=user_id).first()
 
 @app.route('/')
+@login_required
 def teste():
     return render_template('teste.html')
 

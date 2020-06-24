@@ -20,6 +20,7 @@ app.config['SECRET_KEY'] = 'mysecretkey'
 
 ####CONFIGURAÇÕES DO FLASK-LOGIN####
 login_manager = LoginManager()
+login_manager.login_view = "login"
 login_manager.init_app(app)
 
 ####IMPORTAÇÃO DE MODELOS####
