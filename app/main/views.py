@@ -2,7 +2,7 @@ from flask import render_template, url_for, redirect
 from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
 from app.main.models import Trainee, Diretoria, Association
-from app.main.forms import LoginForm
+from app.main.forms import LoginForm, CadastroForm
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -11,8 +11,7 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def teste():
-    associacao = Association.query.all()
-    return render_template('teste.html', associacao = associacao)
+    return render_template('teste.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -33,32 +32,34 @@ def logout():
     logout_user()
     return redirect(url_for("login"))    
 
-@app.route('/like_diretoria/<id>', methods=['POST','GET'])
-def like_diretoria(id):
-    trainee = Trainee.query.get_or_404(id)
-    diretoria = Diretoria.query.all()
+@app.route('/like_diretoria', methods=['POST','GET'])
+def like_diretoria():
+    trainee = current_user
+    diretorias = Diretoria.query.all()
 
     if request.method == 'POST':
         id_diretoria = request.form['id_diretoria']
         diretoria = Diretoria.query.get_or_404(id_diretoria)
-        trainee.diretoria.append(diretoria)
+        
+        assoc = Association(trainee, diretoria)
 
+        db.session.add(assoc)
         db.session.commit()
 
         return redirect(url_for('app.index'))
 
-    return render_template('like_diretoria.html', trainee = trainee, diretoria = diretoria)
+    return render_template('like_diretoria.html', diretoria = diretorias)
 
 @app.route('/cadastro_trainee', methods = ['POST','GET'])
 def cadastro_trainee():
-    if request.method == 'POST':
-        email = request.form['email']
-        nome = request.form['nome']
-        senha = request.form['senha']
+    form = CadastroForm()
+    
+    if form.validate_on_submit():
+        email = form.email.data
+        nome = form.nome.data
+        senha = form.senha.data
 
-        trainee = Trainee(email = email,
-                          nome = nome,
-                          senha = senha)
+        trainee = Trainee(email, nome, senha)
         
         db.session.add(trainee)
         db.session.commit()
