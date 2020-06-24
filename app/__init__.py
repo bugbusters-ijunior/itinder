@@ -17,3 +17,5 @@ Migrate(app, db)
 ####CONFIGURAÇÕES RELACIONADAS A FORMULÁRIOS####
 app.config['SECRET_KEY'] = 'mysecretkey'
 
+####IMPORTAÇÃO DE MODELOS####
+from app.main import models
