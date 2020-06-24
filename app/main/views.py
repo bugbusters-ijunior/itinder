@@ -1,5 +1,5 @@
 from flask import render_template, url_for, redirect
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
 from app.main.models import Trainee, Diretoria, Association
 from app.main.forms import LoginForm
@@ -13,6 +13,7 @@ def load_user(user_id):
 def teste():
     return render_template('teste.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -23,4 +24,10 @@ def login():
             login_user(trainee)
             return redirect(url_for('teste'))
 
-    return render_template('login.html', form=form)    
+    return render_template('login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for("login"))    
