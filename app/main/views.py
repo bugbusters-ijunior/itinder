@@ -65,7 +65,7 @@ def cadastro_trainee():
         db.session.commit()
 
         return redirect(url_for(app.index))
-    return render_template('cadastrar_trainee.html')
+    return render_template('cadastrar_trainee.html', form=form)
 
 @app.route('/perfil/<id>')
 def perfil(id):
