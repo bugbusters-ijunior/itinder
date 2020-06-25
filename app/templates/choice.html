@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/choice.css')}}">
+
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="header">
+        <img src="{{url_for('static', filename='images/logo_iTinder.png')}}">
+    </div>
+
+    <div class="card">
+        <img src="https://cdn.shortpixel.ai/client/q_lossy,ret_img/https://www.thepolyglotgroup.com/wp-content/uploads/2018/09/Human-Resources-2.png" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h3 class="card-title">Recursos Humanos</h3>
+          <p class="card-text" style="text-align: center;">Gestão de Recursos Humanos, Gestão de Pessoas ou Administração de Recursos Humanos é a aplicação de um conjunto de conhecimentos e técnicas administrativas especializadas no gerenciamento das relações das pessoas com as ...</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-4">
+            <button class="choice" id="no" ><img class="choice-image" src="{{url_for('static', filename='images/nope.png')}}"></button>
+            <button class="choice" id="yes"><img class="choice-image" src="{{url_for('static', filename='images/like.png')}}"></button>
+        </div>
+        <div class="col-4">
+        </div>
+    </div>  
+      
+    
+</body>
+</html>
