@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
 </head>
-<body>
-    <h2>Login</h2>
-    <form action="" method="POST">
+<body class="text-center">
+    <form class="form-login" action="" method="POST">
+        <img class="mb-4" src="{{url_for('static', filename='images/icone.itinder.jpeg')}}" alt="Ícone iTinder" width="90" height="90">
+    <h1 class="h3 mb-3 font-weight-normal">Login</h1>
         {{ form.csrf_token }}
         <div class="form-group">
             <label>E-mail</label>
@@ -20,5 +23,6 @@
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    <a href="{{'cadastro_trainee'}}">Ainda não tem uma conta? Faça seu cadastro agora!</a>
 </body>
 </html>
