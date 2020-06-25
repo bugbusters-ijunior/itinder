@@ -72,3 +72,8 @@ def perfil(id):
     trainee = Trainee.query.get_or_404(id)
 
     return render_template('perfil_trainee.html', trainee = trainee)
+
+@app.route('/choice')
+def choice():
+
+    return render_template('choice.html')
