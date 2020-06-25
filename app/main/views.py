@@ -8,13 +8,7 @@ from app.main.forms import LoginForm, CadastroForm
 def load_user(user_id):
     return Trainee.query.filter_by(id=user_id).first()
 
-@app.route('/')
-@login_required
-def teste():
-    return render_template('teste.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     
@@ -22,7 +16,7 @@ def login():
         trainee = Trainee.query.filter_by(email=form.email.data).first()
         if trainee and trainee.senha == form.senha.data:
             login_user(trainee)
-            return redirect(url_for('teste'))
+            return redirect(url_for('choice'))
 
     return render_template('login.html', form=form)
 
@@ -31,24 +25,6 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("login"))    
-
-@app.route('/like_diretoria', methods=['POST','GET'])
-def like_diretoria():
-    trainee = current_user
-    diretorias = Diretoria.query.all()
-
-    if request.method == 'POST':
-        id_diretoria = request.form['id_diretoria']
-        diretoria = Diretoria.query.get_or_404(id_diretoria)
-        
-        assoc = Association(trainee, diretoria)
-
-        db.session.add(assoc)
-        db.session.commit()
-
-        return redirect(url_for('app.index'))
-
-    return render_template('like_diretoria.html', diretoria = diretorias)
 
 @app.route('/cadastro_trainee', methods = ['POST','GET'])
 def cadastro_trainee():
@@ -68,12 +44,26 @@ def cadastro_trainee():
     return render_template('cadastrar_trainee.html', form=form)
 
 @app.route('/perfil/<id>')
+@login_required
 def perfil(id):
     trainee = Trainee.query.get_or_404(id)
 
     return render_template('perfil_trainee.html', trainee = trainee)
 
 @app.route('/choice')
+@login_required
 def choice():
+    trainee = current_user
+    diretorias = Diretoria.query.all()
+
+    if request.method == 'POST':
+        id_diretoria = request.form['id_diretoria']
+        diretoria = Diretoria.query.get_or_404(id_diretoria)
+        
+        assoc = Association(trainee, diretoria)
+
+        db.session.add(assoc)
+        db.session.commit()
+
 
     return render_template('choice.html')
