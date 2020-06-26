@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
 from app.main.models import Trainee, Diretoria, Association
@@ -40,7 +40,7 @@ def cadastro_trainee():
         db.session.add(trainee)
         db.session.commit()
 
-        return redirect(url_for(app.index))
+        return redirect(url_for('login'))
     return render_template('cadastrar_trainee.html', form=form)
 
 @app.route('/perfil/<id>')
@@ -50,7 +50,7 @@ def perfil(id):
 
     return render_template('perfil_trainee.html', trainee = trainee)
 
-@app.route('/choice')
+@app.route('/choice', methods=["POST","GET"])
 @login_required
 def choice():
     trainee = current_user
