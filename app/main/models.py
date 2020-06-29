@@ -40,12 +40,10 @@ class Diretoria(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, unique=True)
     diretor = db.Column(db.String, unique=True)
+    descricao = db.Column(db.String)
+    ref_imagem = db.Column(db.String)
 
     trainees = db.relationship("Association", back_populates="diretoria")
-
-    def __init__(self, nome, diretor):
-        self.nome = nome
-        self.diretor = diretor
 
     def __repr__(self):
         return '<Diretoria %r>' % self.nome
