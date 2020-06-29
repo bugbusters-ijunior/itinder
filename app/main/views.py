@@ -3,6 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
 from app.main.models import Trainee, Diretoria, Association
 from app.main.forms import LoginForm, CadastroForm
+from app.main.utils import encrypt, decrypt
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,7 +15,7 @@ def login():
     
     if form.validate_on_submit():
         trainee = Trainee.query.filter_by(email=form.email.data).first()
-        if trainee and trainee.senha == form.senha.data:
+        if trainee and decrypt(trainee.senha) == form.senha.data:
             login_user(trainee)
             return redirect(url_for('choice'))
 
@@ -33,7 +34,7 @@ def cadastro_trainee():
     if form.validate_on_submit():
         email = form.email.data
         nome = form.nome.data
-        senha = form.senha.data
+        senha = encrypt(form.senha.data)
 
         trainee = Trainee(email, nome, senha)
         
