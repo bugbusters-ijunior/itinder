@@ -1,14 +1,14 @@
 from app import db
 
-class Trainee(db.Model):
-    __tablename__ = 'trainees'
+class User(db.Model):
+    __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, unique=True)
     nome = db.Column(db.String)
     senha = db.Column(db.String)
 
-    diretorias = db.relationship("Association", back_populates="trainee")
+    diretorias = db.relationship("Association", back_populates="user")
 
     @property
     def is_authenticated(self):
@@ -31,7 +31,7 @@ class Trainee(db.Model):
         self.senha = senha
 
     def __repr__(self):
-        return '<Trainee %r>' % self.nome
+        return '<User %r>' % self.nome
 
 
 class Diretoria(db.Model):
@@ -43,7 +43,7 @@ class Diretoria(db.Model):
     descricao = db.Column(db.String)
     ref_imagem = db.Column(db.String)
 
-    trainees = db.relationship("Association", back_populates="diretoria")
+    users = db.relationship("Association", back_populates="diretoria")
 
     def __repr__(self):
         return '<Diretoria %r>' % self.nome
@@ -52,12 +52,12 @@ class Diretoria(db.Model):
 class Association(db.Model):
     __tablename__ = 'association'
     
-    trainee_id = db.Column(db.Integer, db.ForeignKey('trainees.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     diretoria_id = db.Column(db.Integer, db.ForeignKey('diretorias.id'), primary_key=True)
-    trainee = db.relationship("Trainee", back_populates="diretorias")
-    diretoria = db.relationship("Diretoria", back_populates="trainees")
+    user = db.relationship("User", back_populates="diretorias")
+    diretoria = db.relationship("Diretoria", back_populates="users")
 
-    def __init__(self, trainee, diretoria):
-        self.trainee = trainee
+    def __init__(self, user, diretoria):
+        self.user = user
         self.diretoria = diretoria
     

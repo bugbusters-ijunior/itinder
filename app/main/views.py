@@ -1,22 +1,22 @@
 from flask import render_template, url_for, redirect, request
 from flask_login import login_user, logout_user, login_required, current_user
 from app import app, db, login_manager
-from app.main.models import Trainee, Diretoria, Association
+from app.main.models import User, Diretoria, Association
 from app.main.forms import LoginForm, CadastroForm
 from app.main.utils import encrypt, decrypt
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Trainee.query.filter_by(id=user_id).first()
+    return User.query.filter_by(id=user_id).first()
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     
     if form.validate_on_submit():
-        trainee = Trainee.query.filter_by(email=form.email.data).first()
-        if trainee and decrypt(trainee.senha) == form.senha.data:
-            login_user(trainee)
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and decrypt(user.senha) == form.senha.data:
+            login_user(user)
             return redirect(url_for('choice'))
 
     return render_template('login.html', form=form)
@@ -36,9 +36,9 @@ def cadastro_trainee():
         nome = form.nome.data
         senha = encrypt(form.senha.data)
 
-        trainee = Trainee(email, nome, senha)
+        user = User(email, nome, senha)
         
-        db.session.add(trainee)
+        db.session.add(user)
         db.session.commit()
 
         return redirect(url_for('login'))
@@ -47,21 +47,21 @@ def cadastro_trainee():
 @app.route('/perfil/<id>')
 @login_required
 def perfil(id):
-    trainee = Trainee.query.get_or_404(id)
+    user = User.query.get_or_404(id)
 
-    return render_template('perfil_trainee.html', trainee = trainee)
+    return render_template('perfil_trainee.html', trainee = user)
 
 @app.route('/choice', methods=["POST","GET"])
 @login_required
 def choice():
-    trainee = current_user
+    user = current_user
     diretorias = Diretoria.query.all()
 
     if request.method == 'POST':
         id_diretoria = request.form['id_diretoria']
         diretoria = Diretoria.query.get_or_404(id_diretoria)
         
-        assoc = Association(trainee, diretoria)
+        assoc = Association(user, diretoria)
 
         db.session.add(assoc)
         db.session.commit()
